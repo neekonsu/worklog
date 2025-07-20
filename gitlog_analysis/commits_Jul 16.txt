@@ -1,0 +1,26 @@
+commit 9428137842fd638d4d13f92f73be803a48039959
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Wed Jul 16 17:08:40 2025 -0700
+
+    Constructed CLAUDE.md based on devin-ai analyst reports on FSM and memory vulnerabilities
+
+diff --git a/CLAUDE.md b/CLAUDE.md
+new file mode 100644
+--
+commit 1a80bfb7eb816c426bf329fa9532873b6934894a
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Wed Jul 16 16:26:24 2025 -0700
+
+    Updated devin-generated reports on FSM across Lights, CMS, and Handle, as well as file-per-file memory reports which show BO, Null pointer, indef alloc, etc.
+
+diff --git a/Memory_Safety_Risk_Report.md b/Memory_Safety_Risk_Report.md
+new file mode 100644
+--
+commit 3dcc59f06702c1d8186549abe2cc993b0edc8d5f
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Wed Jul 16 09:53:07 2025 -0700
+
+    Removed favicon
+
+diff --git a/Doxyfile b/Doxyfile
+index 1689e5b3..f8aca1f9 100644

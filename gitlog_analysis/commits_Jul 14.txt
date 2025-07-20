@@ -1,0 +1,35 @@
+commit cf85a3ffba8fc8867f9d69672ac6bfaf32fa5f55
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 21:52:27 2025 -0700
+
+    Updated Doxyfile and commented out cms/main.c
+
+diff --git a/Doxyfile b/Doxyfile
+index 84b1f45f..1689e5b3 100644
+--
+commit caf800ded574c28a338b71bf821203cfd7abd2e8
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 16:48:31 2025 -0700
+
+    Created remarks markdon for entire common directory.
+
+diff --git a/REMARKS.md b/REMARKS.md
+index 17426c8e..4cf30ad9 100644
+--
+commit 7e11e71a85db02650a61bd133c9cd8e2607d554e
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 15:56:49 2025 -0700
+
+    Doxygen integration complete, outputs Latex and HTML searchable documentation of annotated code, including referencer and referencee lists.
+
+diff --git a/Doxyfile b/Doxyfile
+index 590edc44..84b1f45f 100644
+--
+commit 8208dd7fbacc3f5efddb2a65cbc9fd0d70efebb8
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 15:34:35 2025 -0700
+
+    Initial commit following full recursive doxygen generation
+
+diff --git a/Doxyfile b/Doxyfile
+new file mode 100644

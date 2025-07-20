@@ -1,0 +1,8 @@
+commit 14024a23d2058200ae74319c57c36205045fc0b3
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Fri Jul 18 17:05:26 2025 -0700
+
+    syncing suggestions, good first results
+
+diff --git a/testing_notes.md b/testing_notes.md
+new file mode 100644

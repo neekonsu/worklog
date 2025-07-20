@@ -1,0 +1,69 @@
+commit dd690bd24f2b74e709eef2f0dd5fe44945f53193
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Tue Jul 15 13:06:20 2025 -0700
+
+    sync commit
+
+diff --git a/cms/inquis/cms_cli.c b/cms/inquis/cms_cli.c
+index 8b4c3af5..363576d1 100644
+--- a/cms/inquis/cms_cli.c
++++ b/cms/inquis/cms_cli.c
+@@ -80,6 +80,12 @@
+ bool cfg_overload = false;
+ Config *config = NULL;
+--
+commit cf85a3ffba8fc8867f9d69672ac6bfaf32fa5f55
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 21:52:27 2025 -0700
+
+    Updated Doxyfile and commented out cms/main.c
+
+diff --git a/Doxyfile b/Doxyfile
+index 84b1f45f..1689e5b3 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -2021,7 +2021,7 @@ EXTRA_SEARCH_MAPPINGS  =
+ # If the GENERATE_LATEX tag is set to YES, Doxygen will generate LaTeX output.
+ # The default value is: YES.
+--
+commit caf800ded574c28a338b71bf821203cfd7abd2e8
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 16:48:31 2025 -0700
+
+    Created remarks markdon for entire common directory.
+
+diff --git a/REMARKS.md b/REMARKS.md
+index 17426c8e..4cf30ad9 100644
+--- a/REMARKS.md
++++ b/REMARKS.md
+@@ -4,4 +4,393 @@ GLOVES MUST COME OFF LEAVING RND LAB, HANDS MUST BE WASHED
+ # TASKS
+ 
+--
+commit 7e11e71a85db02650a61bd133c9cd8e2607d554e
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 15:56:49 2025 -0700
+
+    Doxygen integration complete, outputs Latex and HTML searchable documentation of annotated code, including referencer and referencee lists.
+
+diff --git a/Doxyfile b/Doxyfile
+index 590edc44..84b1f45f 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -42,39 +42,39 @@ DOXYFILE_ENCODING      = UTF-8
+ # title of most generated pages and in a few other places.
+ # The default value is: My Project.
+--
+commit 8208dd7fbacc3f5efddb2a65cbc9fd0d70efebb8
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Mon Jul 14 15:34:35 2025 -0700
+
+    Initial commit following full recursive doxygen generation
+
+diff --git a/Doxyfile b/Doxyfile
+new file mode 100644
+index 00000000..590edc44
+--- /dev/null
++++ b/Doxyfile
+@@ -0,0 +1,2947 @@
++# Doxyfile 1.14.0

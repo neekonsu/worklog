@@ -1,0 +1,30 @@
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Fri Jul 18 17:05:26 2025 -0700
+
+    syncing suggestions, good first results
+
+diff --git a/testing_notes.md b/testing_notes.md
+new file mode 100644
+index 00000000..8d3e6cba
+--- /dev/null
++++ b/testing_notes.md
+@@ -0,0 +1,8 @@
++# Sidenotes
++## SD REMOVED -> FIFO CRASH
++FIFO crash ?on CMS? when SD card removed on start
++- Suggestion: Make specific error state on SD missing detection
++- Also improve space detection
++
++## C02 OUT DURING CONFIRM STOP PISTON
++Improve/shorten loop from C02 out to start motion back 
+\ No newline at end of file
+
+commit 7d710cfb44b2e6d0abaabad5ca60a3b1e02928ca
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Thu Jul 17 13:52:41 2025 -0700
+
+    Added PDF of Testing Strategy
+
+diff --git a/Gen_3_0_Robustness_Testing_Strategy.pdf b/Gen_3_0_Robustness_Testing_Strategy.pdf
+new file mode 100644
+index 00000000..63772de9

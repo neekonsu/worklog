@@ -1,0 +1,8 @@
+commit dd690bd24f2b74e709eef2f0dd5fe44945f53193
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date:   Tue Jul 15 13:06:20 2025 -0700
+
+    sync commit
+
+diff --git a/cms/inquis/cms_cli.c b/cms/inquis/cms_cli.c
+index 8b4c3af5..363576d1 100644

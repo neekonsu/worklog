@@ -10,15 +10,17 @@
 
 ## **BILL TO:**
 **Inquis Medical Inc.**  
-1530 O'Brien Drive 
+1530 O'Brien Drive   
 Menlo Park, CA, 94027 
 
 ## **FROM:**
 **Neekon Saadat**  
-Software Engineering Consultant  
-75 Barry ln.
-Atherton, CA, 94027 
-neekon@inquismedical.com
+Embedded Software Engineering Consultant  
+75 Barry ln.  
+Atherton, CA, 94027  
+
+**Contact:**  
+neekon@inquismedical.com | neekonsu@gmail.com  
 +1(650) 739-3488  
 
 ---

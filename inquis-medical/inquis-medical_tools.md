@@ -22,7 +22,14 @@
 
 ## SOFTWARE EDITOR/IDE
 - stm cube
+- visual studio code
+
+## HARDWARE EDITOR/EDA
+- Altium
 
 ## TASK TRACKING/SCHEDULING
 - google calendar
 - excel spreadsheet
+- linear (neekon only currently)
+- gh issues (neekon only currently)
+

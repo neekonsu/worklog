@@ -1,0 +1,16 @@
+d70e9558268cd7197a0688a48aa189628594f5dc
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Wed Jul 16 09:53:07 2025
+Subject: Removed favicon
+
+diff --git a/Doxyfile b/Doxyfile
+index 1689e5b3..f8aca1f9 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -61,13 +61,13 @@ PROJECT_BRIEF          = "DOCUMENTATION OF INQUIS GEN 3 SOURCECODE"
+ # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
+ # the logo to the output directory.
+--
++
+
+

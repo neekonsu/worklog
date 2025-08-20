@@ -1,0 +1,16 @@
+3d5e396e1bedda0b7c07b52d21765f069cbc3eec
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Tue Jul 29 11:33:32 2025
+Subject: removed items from remarks pertaining to BBStr after investigating and determining safe
+
+diff --git a/Documentation/REMARKS.md b/Documentation/REMARKS.md
+index 3260cd32..f88cbff2 100644
+--- a/Documentation/REMARKS.md
++++ b/Documentation/REMARKS.md
+@@ -5,7 +5,7 @@
+ # common/
+ 
+--
+ char *bbstr_malloc_copy(BBStr *bstr) {
+
+

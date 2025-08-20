@@ -1,0 +1,260 @@
+/* ===== Corporate Invoice (WeasyPrint / Pandoc) ===== */
+:root{
+  --text:#111;
+  --muted:#555;
+  --light:#e6e6e6;
+  --brand:#0a4a7a; /* subtle corporate blue for accents */
+}
+
+@page {
+  size: A4;
+  margin: 22mm 16mm 20mm 16mm;
+
+  /* Running header/footer (WeasyPrint) */
+  @top-left {
+    content: string(doctitle);
+    color: var(--muted);
+    font-size: 10pt;
+  }
+  @top-right {
+    content: string(docmeta);
+    color: var(--muted);
+    font-size: 10pt;
+  }
+  @bottom-left {
+    content: "Invoice";
+    color: var(--muted);
+    font-size: 9pt;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    color: var(--muted);
+    font-size: 9pt;
+  }
+}
+
+/* Pandoc sets body -> <article> optionally; keep generic */
+html, body {
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
+  line-height: 1.35;
+  font-size: 11pt;
+}
+
+h1, h2, h3, h4 {
+  color: var(--text);
+  margin: 0 0 8pt 0;
+  line-height: 1.2;
+}
+h1 {
+  font-size: 20pt;
+  letter-spacing: .2px;
+  string-set: doctitle content(text); /* used in header */
+  margin-bottom: 4pt;
+}
+h2 { font-size: 14pt; margin-top: 14pt; }
+h3 { font-size: 12.5pt; margin-top: 12pt; }
+
+p, ul, ol, dl, blockquote, pre, table { margin: 0 0 8pt 0; }
+ul, ol { padding-left: 18pt; }
+
+a { color: var(--brand); text-decoration: none; border-bottom: 0.5pt solid var(--light); }
+strong { font-weight: 600; }
+
+blockquote {
+  border-left: 3pt solid var(--light);
+  padding: 4pt 0 4pt 10pt;
+  color: var(--muted);
+}
+
+/* Code blocks (if your invoice includes terms) */
+code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 9.5pt;
+}
+pre {
+  border: 0.5pt solid var(--light);
+  border-radius: 6pt;
+  padding: 8pt 10pt;
+  background: #fafafa;
+}
+
+/* ===== Invoice-specific layout helpers ===== */
+
+/* Header: logo left, org info right */
+.invoice-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12pt;
+  align-items: start;
+  margin-bottom: 10pt;
+  padding-bottom: 10pt;
+  border-bottom: 1pt solid var(--light);
+}
+.invoice-header .logo img {
+  max-height: 42pt; max-width: 220pt;
+}
+.invoice-header .org-info {
+  text-align: right;
+  font-size: 10.5pt;
+  color: var(--text);
+}
+.invoice-header .org-info .name {
+  font-weight: 600; font-size: 12pt;
+}
+
+/* Bill-to / Ship-to / Meta */
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr;
+  column-gap: 12pt;
+  margin: 8pt 0 12pt 0;
+}
+.card {
+  border: 0.5pt solid var(--light);
+  border-radius: 8pt;
+  padding: 10pt;
+}
+.card h3 {
+  font-size: 11pt; color: var(--muted); margin-bottom: 6pt;
+}
+.small {
+  font-size: 10pt; color: var(--muted);
+}
+
+/* Make a string for the top-right running header from meta */
+.meta {
+  string-set: docmeta content(text);
+}
+
+/* Line-items table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 10.5pt;
+  color: var(--muted);
+  border-bottom: 1pt solid var(--light);
+  padding: 8pt 6pt;
+}
+table tbody td {
+  padding: 8pt 6pt;
+  vertical-align: top;
+  border-bottom: 0.5pt solid var(--light);
+  font-size: 10.5pt;
+}
+table tfoot td {
+  border-top: 1pt solid var(--light);
+  padding: 8pt 6pt;
+}
+
+/* Numeric columns aligned right */
+th.num, td.num { text-align: right; white-space: nowrap; }
+
+/* Subtle zebra */
+tbody tr:nth-child(even) td {
+  background: #fbfbfb;
+}
+
+/* Totals panel (align right, bold grand total) */
+.totals {
+  margin-top: 10pt;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 260pt;
+  column-gap: 12pt;
+}
+.totals .spacer { /* left empty area */ }
+.totals .box {
+  border: 0.5pt solid var(--light);
+  border-radius: 8pt;
+  padding: 8pt 10pt;
+}
+.totals table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.totals td {
+  padding: 6pt 0;
+  font-size: 11pt;
+}
+.totals td.label {
+  color: var(--muted);
+}
+.totals td.amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.totals .grand td {
+  border-top: 1pt solid var(--light);
+  padding-top: 8pt;
+  font-weight: 700;
+  font-size: 12pt;
+  color: var(--text);
+}
+
+/* Notes / Terms */
+.notes, .terms {
+  margin-top: 12pt;
+  font-size: 10.5pt;
+  color: var(--muted);
+}
+
+/* Footer block you place at bottom of content; page footer still shows page numbers */
+.footer {
+  margin-top: 12pt;
+  padding-top: 10pt;
+  border-top: 1pt solid var(--light);
+  font-size: 9.5pt;
+  color: var(--muted);
+}
+
+/* Page breaks for sections if needed */
+.page-break { page-break-before: always; }
+
+/* Prevent awkward breaks inside important blocks */
+.invoice-header, .meta-grid, .totals, .notes, .terms {
+  break-inside: avoid;
+}
+
+/* Allow main tables to break across pages but prevent row splitting */
+table {
+  break-inside: auto;
+}
+
+/* Prevent table rows from being split across pages */
+table tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Keep table headers with content when table breaks */
+table thead {
+  break-after: avoid;
+}
+
+/* Tighten common Markdown artifacts for invoices */
+table th:first-child, table td:first-child { padding-left: 0; }
+table th:last-child,  table td:last-child  { padding-right: 0; }
+
+/* Optional watermark (place an element with class .watermark anywhere) */
+.watermark {
+  position: fixed;
+  top: 40%;
+  left: 12%;
+  transform: rotate(-25deg);
+  font-size: 48pt;
+  color: rgba(0,0,0,0.06);
+  z-index: 0;
+  letter-spacing: 2pt;
+  text-transform: uppercase;
+}
+
+/* If you embed a logo SVG that looks too dark in print, lighten it slightly */
+svg { color: var(--text); fill: currentColor; }
+
+/* Fine-tune lists in cards */
+.card ul, .card ol { margin: 6pt 0 0 0; padding-left: 16pt; }

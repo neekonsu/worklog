@@ -1,0 +1,16 @@
+4496058a8529155b4c723e6cb527c7157be7683f
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Tue Jul 15 13:06:20 2025
+Subject: sync commit
+
+diff --git a/cms/inquis/cms_cli.c b/cms/inquis/cms_cli.c
+index beb5af58..dba859e1 100644
+--- a/cms/inquis/cms_cli.c
++++ b/cms/inquis/cms_cli.c
+@@ -80,6 +80,12 @@
+ bool cfg_overload = false;
+ Config *config = NULL;
+--
+         printf("> ");
+
+

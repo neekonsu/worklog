@@ -1,0 +1,48 @@
+c54a71e7c7ddddc5b923373355da29e34d699369
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Thu Jul 24 19:35:22 2025
+Subject: 1/2 way manual code review common/, pending handle/ and cms/
+
+diff --git a/Documentation/REMARKS.md b/Documentation/REMARKS.md
+index 68def20d..3260cd32 100644
+--- a/Documentation/REMARKS.md
++++ b/Documentation/REMARKS.md
+@@ -274,6 +274,1246 @@ typedef struct _BBStrNode {
+ ```
+ All that in bbstr.c just for ref_count? Let's review.
+--
+ // THEORY
+
+
+34fddcc4ec7969770f95e22828bb6aae6b9c6d57
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Thu Jul 24 16:17:41 2025
+Subject: Minor edits to BBStr docstrings, finished in-depth code-review of BBStr API in isolation (no step-in or usage tracing). Documenting this second-pass in remarks.md, pending consolidation into a comprehensive slidedeck on codebase suggestions.
+
+diff --git a/Documentation/REMARKS.md b/Documentation/REMARKS.md
+index 94f725a7..68def20d 100644
+--- a/Documentation/REMARKS.md
++++ b/Documentation/REMARKS.md
+@@ -1,10 +1,280 @@
+-GLOVES MUST COME OFF LEAVING RND LAB, HANDS MUST BE WASHED
++# GLOVES MUST COME OFF LEAVING RND LAB, HANDS MUST BE WASHED
+--
+     char *buf = (char *)malloc(len);
+
+
+843ce7f7bd587d5cfcc690589b0e482ef2b51179
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Thu Jul 24 15:35:52 2025
+Subject: Cleaned out stragglers in project root
+
+diff --git a/.gitignore b/.gitignore
+index a5b5ee9c..98f6a2e8 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -70,10 +70,10 @@ gen*.hex
+ **/.DS_Store
+ # release/**/*
+--
+new mode 100644
+
+

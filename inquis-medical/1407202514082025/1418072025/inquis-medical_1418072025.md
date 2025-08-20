@@ -4,7 +4,6 @@
 
 **INVOICE #:** INV-2025-001  
 **DATE:** July 20, 2025  
-**DUE DATE:** August 31, 2025  
 
 ---
 
@@ -52,11 +51,3 @@ neekon@inquismedical.com | neekonsu@gmail.com
 **Total Days Worked:** 5
 
 ---
-
-## **PAYMENT TERMS**
-
-- **Payment Due:** 1 calendar month from invoice date
-- **Late Fee:** 1.5% per month on overdue amounts
-- **Accepted Payment Methods:** Check, Wire Transfer, ACH
-
-**Thank you for your business.**

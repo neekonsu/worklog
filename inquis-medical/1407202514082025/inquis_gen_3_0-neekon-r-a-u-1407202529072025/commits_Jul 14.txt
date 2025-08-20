@@ -1,0 +1,77 @@
+9f42f318b82a85fb4b28106d9da6a9e4d7373a52
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Mon Jul 14 21:52:27 2025
+Subject: Updated Doxyfile and commented out cms/main.c
+
+diff --git a/Doxyfile b/Doxyfile
+index 84b1f45f..1689e5b3 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -2021,7 +2021,7 @@ EXTRA_SEARCH_MAPPINGS  =
+ # If the GENERATE_LATEX tag is set to YES, Doxygen will generate LaTeX output.
+ # The default value is: YES.
+--
+   /* USER CODE BEGIN 6 */
+
+
+eec1bd5b2ddae203139c781e2eb0d29f283d4477
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Mon Jul 14 16:48:31 2025
+Subject: Created remarks markdon for entire common directory.
+
+diff --git a/REMARKS.md b/REMARKS.md
+index 17426c8e..4cf30ad9 100644
+--- a/REMARKS.md
++++ b/REMARKS.md
+@@ -4,4 +4,393 @@ GLOVES MUST COME OFF LEAVING RND LAB, HANDS MUST BE WASHED
+ # TASKS
+ 
+--
++// }
+
+
+491755f5ae24cb4cf072e4933167e96653667e65
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Mon Jul 14 15:56:49 2025
+Subject: Doxygen integration complete, outputs Latex and HTML searchable documentation of annotated code, including referencer and referencee lists.
+
+diff --git a/Doxyfile b/Doxyfile
+index 590edc44..84b1f45f 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -42,39 +42,39 @@ DOXYFILE_ENCODING      = UTF-8
+ # title of most generated pages and in a few other places.
+ # The default value is: My Project.
+--
+ # Doxygen will group on one line in the generated HTML documentation.
+
+
+618d11b6424c9088d906d1c4aba11cb594acaa73
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Mon Jul 14 14:24:46 2025
+Subject: Finished documenting common.
+
+diff --git a/REMARKS.md b/REMARKS.md
+index d3bcd7b6..17426c8e 100644
+--- a/REMARKS.md
++++ b/REMARKS.md
+@@ -1 +1,7 @@
+-GLOVES MUST COME OFF LEAVING RND LAB, HANDS MUST BE WASHED
+\ No newline at end of file
+--
+     if (buf_max_size >= 1) {
+
+
+89e677248d62820f302f0c029af73bbb46573b7b
+Author: Neekon Saadat <neekonsu@gmail.com>
+Date: Mon Jul 14 12:40:43 2025
+Subject: Half way through documenting all functions and stucts/enums
+
+diff --git a/.clang-format b/.clang-format
+index 3fd92623..8de7cf8e 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -27,4 +27,6 @@ BraceWrapping:
+ # ColumnLimit: 0
+ # IndentPPDirectives: BeforeHash
+

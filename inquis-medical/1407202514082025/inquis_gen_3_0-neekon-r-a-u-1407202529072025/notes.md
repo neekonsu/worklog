@@ -1,5 +1,5 @@
 # Personal Scratch / Notes
-
+week of 28th:
 ## Monday:
 
 - 1h call with team to sync progress, stayed after to discuss projects specific to me with Mike Pare (From KATW Flight Centre)

@@ -1,4 +1,4 @@
-# Inquis Gen 2 - Gen 3 Codebase Suggestions for Zach S.
+#Inquis Gen 2 - Gen 3 Codebase Suggestions for Zach S.
 *The following suggestions are derived from code reviewed in the main branch of inquis_gen_2_2 <877e567d7b8383b5dc6bacf775bbc0a010b0521e> and inquis_gen_3_0 <9dfa6d65ccb128b5cd307f8082603f34d296797b>*
 
 ## GEN3
@@ -16,6 +16,8 @@
 - 120 CMD_CHECK_IS used instead of if (...) {emit_log_comment_record(...)} -> We should have one way to handle errors visible to all modules; should even be a separate module
 - 104 function never called
 [15h10 22 aug 2025 ~ faster to drop these questions and comments into powerpoint from the getgo]
+[15h59 22 au 2025 ~ leaving textual commentary and oneliners here and using slides for visual content like doxygen graphs]
+- 
 **Suggestions:**
 
 #### LOG

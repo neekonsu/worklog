@@ -1,6 +1,8 @@
 #Inquis Gen 2 - Gen 3 Codebase Suggestions for Zach S.
 *The following suggestions are derived from code reviewed in the main branch of inquis_gen_2_2 <877e567d7b8383b5dc6bacf775bbc0a010b0521e> and inquis_gen_3_0 <9dfa6d65ccb128b5cd307f8082603f34d296797b>*
 
+**Process:** 1. Read all functions and make commentary in this file or grab callgraphs/screenshots of code and collect into google slides presentation. 2. Organize remarks into slideshow and consolidate items originating from the same module or repetitive patterns that span multiple modules 3. Pull main and branch to implement all changes, then review PR with Zach.
+
 ## GEN3
 
 ### CMS
@@ -17,6 +19,7 @@
 - 104 function never called
 [15h10 22 aug 2025 ~ faster to drop these questions and comments into powerpoint from the getgo]
 [15h59 22 au 2025 ~ leaving textual commentary and oneliners here and using slides for visual content like doxygen graphs]
+- 145 function never called
 - 
 **Suggestions:**
 

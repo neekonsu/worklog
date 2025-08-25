@@ -1,0 +1,1 @@
+This archive collects the human and agent generated reports used in the initial codebase discovery and stress testing strategy. The files are from July 2025 and stashed here in order to safely remove the neekon-r-a-u branch from inquis_gen_3_0 repo.

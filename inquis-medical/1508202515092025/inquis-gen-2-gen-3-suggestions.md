@@ -35,7 +35,27 @@
 - 422 including but not limited to this line, add checks for arg inputs; better to catch ourselves than letting atoi or other functions fail
 - 438 i not incremented; was this supposed to be a temp change? suggest revert
 - 450 _setup_audio implements loading clot audio; suggest renaming, reimplementing, or removing to reflect function name.
-- 
+- 458 Found this print confusing; We do not accept no args, change to something like "no args received, exiting"
+- 465 why do we set sd false here but true later for the same setup condition (debug mode true)?
+- 514 Incosistent arg checks; current argc style checks should still expect a specific count -- not >=
+- 529 delete line not needed
+- 593 preprocessor directives not needed since this command serves atomic function: testing loopback
+- 627 preprocessor directive not needed, this code can become a new cli command; there is already a crit function shortly after, why not use this?
+- 641 remove code in question
+- 668 n t s there are references to interrupts relating to setup and timer; investigate interrupts since mike thinks we are 'interruptless'
+- 668 from here to end of function, crit section not needed since this entire function is critical.
+- 677 n t s review the result of this emperical test; is this explained by fastest timing before hitting basic overhead, or meaningful?
+- 677 n t s collect emperical code into another review. We should replace these values with forward design, otherwise we have weak justification of results.
+- 729 here and in previous extern, better to include the file or to run the test right here; limits visibility in static tools. Reason for this approach?
+- 725 preprocessor directive not needed for testing-only cli command
+- 745 unit tests should all be atomic. No messages should be confusing.
+- 740 preprocessor directive not needed
+- 742 elif only shows up here / nowhere else; if we wanted to catch the third case here, we should have caught it everywhere. directives should all be removed regardless.
+- 763 replace externs by including tests. Handling tests will be a separate meeting. Unit tests live in software thus should not be mixed into cli. Integration tests can live here and should be included. Can improve printing the test results.
+- 807 appropriate to rename function to _cmd_test_watchdog
+- 840 delete empty capture health check
+- 1110 this doesn't need to be a function unless we want to beautify errors or create an error type with a long output format.
+
 [15h10 22 aug 2025 ~ faster to drop these questions and comments into powerpoint from the getgo]
 [15h59 22 au 2025 ~ leaving textual commentary and oneliners here and using slides for visual content like doxygen graphs] 
 **Suggestions:**

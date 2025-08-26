@@ -139,10 +139,47 @@ CMS .c files:
 - 303 replace preprocessor directive and collect integration tests.
 - 383 use standard abstraction naming such as get_<private_variable_name>
 
+#### CMS STATE
+- 68 global state variable breaks encapsulation, make static and provide accessor functions
+- 83 typo in macro name SD_REQUIRED_FOR_DEVELOPEMENT, should be DEVELOPMENT
+- 86 preprocessor directive for runtime logic, use runtime boolean check instead
+- 106 three volt rail will not be zero. Define and compare against constant POST_MIN_3V3_RAIL_VOLTAGE 
+- 112 same magic number issue for 5V rail check
+- 118 same magic number issue for 12V rail check
+- 124 same magic number issue for battery voltage check
+- n t s to set voltage rail minimums conservatively (+0/-0.5V) and to set battery minimums based on joulometer/emperical data on expected operation time available at specific voltages (should be R&D step when qualifying any change to battery model or vendor). Realistic to set minimum for 5-10mins of operation so no unit is deployed that dies right when the interventionalist is prepared to aspirate.
+- 144 dead function _power_is_in_range always returns true, implement or remove
+- 166 no null check on fifo_writ_get_ptr return value before use
+- 191 using assert for runtime safety check, use proper error handling instead
+- 299 direct hardware control in state logic, move to abstraction layer; cms_state should invoke commands to devices (using their respective APIs) to maintain code isolation and readability (i.e. avoiding expressions like _set_valve_function(cms_state, config, false); which are false abstractions equivalent to pasting the hardware control code in the switch case). Each device API should have a set of commands and responses (including errors) which can be tabulated just like the FSM states. The transaction between the FSM and Device APIs follow a consistent format with al device invokations being transparent at a plain-english level when reading the FSM code, and the responses and errors are specified and collected into the API code so that we can statically determine that our FSM code is extensive in handling all possible responses from the devices it invokes. If we encounter unforeseen errors in testing, we update the device API (atomic updates) and device API spec/table (adding responses and errors) which we can then handle in the associated FSMs, statically verify that our handling is extensive, and once again have safe, traceable, readable code. Changes to device operation such as driving times and voltages reside solely in the appropriate API, thus preserving the correctness of FSM code after atomic changes to device/hardware-level code.
+- 314 n t s that all if/else code in each switch case should be converted into a preamble of boolean expressions to serve as predicates and switch statements within each FSM state for handling said predicates; The FSM and state transitions implements the device's state-transition matrix, even if we have not yet created this at the documentation level. Nested switches are much clearer implementations of the state-transition matrix than switches with nested if statements. For states with many child predicates (a state which can transition to a large number of other states; i.e. high connectivity node), the need to use one consistent syntactic structure is clear.
+- 353 complex boolean condition spans multiple lines, extract to case's preamble as a standalone bool variable assigned to the whole expression for clarity.
+- 424 unconditionally overwrites co2_ok state (if co2_ok is false then we reach PISTON_STATE_60_CONFIRMING_STOP and set it true, we are able to aspirate with the real condition being co2_ok false), remove this line entirely or qualify why in comments
+- 487 valve operation in error state without lid check, add safety check
+- 508 same valve operation without lid check issue
+- 521 same valve operation without lid check issue
+- 564 side effect timer_latch call in variable declaration section, move to actions
+- 601 no post call here?
+- 629 block comment explaining state clearing, extract to clear_handle_state function
+- 756 dead code with hardcoded false condition, remove false prefix
+- 764 same dead code pattern with false prefix
+- 771 redundant true condition, remove true prefix
+- 921 same redundant true condition
+- 935 entire commented case block LED_STATE_900_VACUUM_STATE_CYCLE, remove dead code
+- 1005 redundant true condition in if statement
+- 1045 commented audio_play call, implement or remove
+- 1051 same commented audio call issue
+- 1102 test code in production logic, move to separate test harness
+- 1129 multiple test injection blocks scattered in main loop, extract to handle_integration_tests function
+- 1217 test packet availability override in production code, move to test mock layer
+- 1282 test CRC corruption in production code, move to test mock abstraction
+- 1392 dead timeout logic with redundant true condition, implement properly or remove
+- 1492 comment acknowledges ADC performance issue, implement timer-based sampling
+- 1494 six consecutive ADC samples in main loop causing performance bottleneck, cache results with periodic
+sampling
 
 
 #### LOG
-- note to self to check where emit_log_error_once is called; may be unsafe given warning about static/dynamic string usage
 - note to self to make suggestion regarding base case of empty comment in emit_log_comment_record, which returns instead of emitting associated default comment, allowing for accidentally implementing silent errors (should not be possible)
 
 ### HANDLE

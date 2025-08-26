@@ -3,6 +3,57 @@
 
 **Process:** 1. Read all functions and make commentary in this file or grab callgraphs/screenshots of code and collect into google slides presentation. 2. Organize remarks into slideshow and consolidate items originating from the same module or repetitive patterns that span multiple modules 3. Pull main and branch to implement all changes, then review PR with Zach.
 
+---
+#### Custom source code (.c) linecounts:
+CMS .c files:
+  - cms_inquis_main.c: 52 lines
+  - cms_comm_state.c: 156 lines
+  - sd_card.c: 231 lines
+  - cms_emc.c: 247 lines
+  - cms_log_writer.c: 386 lines
+  - cms_devices.c: 429 lines
+  - fatfs_sd_card.c: 567 lines
+  - cms_cli.c: 1,133 lines
+  - cms_state.c: 1,650 lines
+
+  Total CMS: 4,851 lines
+
+  Handle .c files:
+  - han_inquis_main.c: 75 lines
+  - ad5940_glue.c: 108 lines
+  - ad5940_overloads.c: 108 lines
+  - han_emc.c: 217 lines
+  - han_cli.c: 252 lines
+  - han_sample.c: 332 lines
+  - ad5940_api.c: 503 lines
+  - han_state.c: 868 lines
+
+  Total Handle: 2,463 lines
+
+  Common .c files:
+  - track_stats.c: 95 lines
+  - crc.c: 99 lines
+  - cli_helpers.c: 111 lines
+  - test_helpers.c: 132 lines
+  - packet.c: 161 lines
+  - lights.c: 163 lines
+  - emc.c: 189 lines
+  - log.c: 208 lines
+  - fifo.c: 210 lines
+  - led_driver.c: 211 lines
+  - state_defs.c: 243 lines
+  - config.c: 268 lines
+  - retarget.c: 292 lines
+  - devices.c: 347 lines
+  - bbstr.c: 367 lines
+  - common.c: 398 lines
+  - comm.c: 440 lines
+  - fmt.c: 771 lines
+
+  Total Common: 4,705 lines
+
+  Grand total custom code: 12,019 lines
+---
 ## GEN3
 ---
 ### Condensed report on dead code to follow up later
@@ -13,7 +64,6 @@
 ---
 ### CMS
 #### CLI
-**Questions:**
 - 81 what is cfg_overload for
 - _<funName> -> local and <funName> -> global?
 - 85 n t s to check sd_card_mount() and see why/if it is okay to emit non-blocking error if error thrown
@@ -57,16 +107,32 @@
 - 1110 this doesn't need to be a function unless we want to beautify errors or create an error type with a long output format.
 
 [15h10 22 aug 2025 ~ faster to drop these questions and comments into powerpoint from the getgo]
-[15h59 22 au 2025 ~ leaving textual commentary and oneliners here and using slides for visual content like doxygen graphs] 
-**Suggestions:**
+[15h59 22 aug 2025 ~ leaving textual commentary and oneliners here and using slides for visual content like doxygen graphs] 
+
+
+#### CMS COMM STATE
+- 84 packet, not update_packet
+- 84 n t s to see what is meant by "may or may not be sent" in practice; potentially undesireable logic for comms
+- 88 n t s to collect all of the different asserts used across the codebase and to suggest a single assert.
+- 97 redundant break statements in switch case
+- 110 packet n bytes used but never checked against packet size. Recommend setting a global packet size used for generating fifo packets/slots to fill and referencing this global size in memcpy, otherwise this looks like the n bytes can be different for each Packet instance, which means we should check size before memcpy.
+- 91 start_cycle_ms should be set to get_time_ms() from initialization
+- 124 preprocessor directive not needed, collect into atomic unit test instead
+- 136 delete redundant variable cms_comm_n_replies
+- 153 default branch redundant if only contains break. Realistically, this should be an error condition as it indicates non-existent state was passed, likely corruption or bug in code. Current implementation fails silently which works against us.
+- 31 in header, COMM_STATE_N_STATES in CommStateVal is never referenced, delete from struct or implement
+
+#### CMS DEVICES
+- 164 n t s that his is not a bad start for creating our error logging, but needs more adoption
+
+#### CMS INQUIS MAIN
 
 #### LOG
-**Questions:**
 - note to self to check where emit_log_error_once is called; may be unsafe given warning about static/dynamic string usage
 - note to self to make suggestion regarding base case of empty comment in emit_log_comment_record, which returns instead of emitting associated default comment, allowing for accidentally implementing silent errors (should not be possible)
-- 
-**Suggestions:**
 
 ### HANDLE
 
 ### COMMON
+#### COMMON
+- 337 finish or prune stack_check()

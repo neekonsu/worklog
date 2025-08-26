@@ -60,7 +60,6 @@ CMS .c files:
 - CLI commands are not dead, they are accessed via function pointer dispatch which Zach implemented through macros
 - **BBStr API**: bbstr_list_del_matches, bbstr_join, hex_dump, string_buffer_check -> All dead code
 - **SD Card API**: sd_card_read_file_binary, sd_card_open_read_only
-- 
 ---
 ### CMS
 #### CLI
@@ -132,7 +131,15 @@ CMS .c files:
 - 73 determine appropriate value
 - 122 This is a slow loop. If we only write allcaps LOG<NUMBER>, unnecessary to CHECK_CHARS. Instead, strcmp each filename to skim the greatest, then strip the number and produce the next filename (only fully parse one string, the highest value filename instead of each). O(n * strcmp) instead of O(n * strparse).
 - 176 abstraction not needed since we already include fatfs in this file. This obfuscates logic/requires stepping into API. Recommend stripping all "one line abstractions" (API functions that contain one line or return statement) since they don't improve readability. If this pattern exists to replace function names like f_sync with sd_card_flush (from functional name to symbolic name) then I recommend using a comment for adding context instead of constructing methods to store meaning in the signature.
-- 
+- 171 vs 180 Let's find all areas where we are inconsistent (return 0 vs NOERR, inquis_assert vs TRY_CHECK_IS, etc) and agree on **one** standard. Every new way of writing the same logic requires the reader to judge why and impedes contributing code in the absence of explanation.
+- 174 why? We ignore the true state of the file handle.
+- 191 Let _log_sdcard_close fail silently as it current may, and we call it when we detect _log_sdcard_is_open. This toggles the bool but not the filehandle (still dirty). Now, we call sd_card_open_read_write at the new fh and get unpredictable behavior. Fatfs will either throw an error on f_open or succeed but the fh is in an inconsistent state, which is worse, since we will have long moved on from here by the time we call f_write, which will either fail with FR_DISK_ERR, write to the wrong sector, or fail silently and write empty files with the remedy being a full open-write-close cycle to reset. Recommended change is to catch and explicitly handle fatfs errors in _log_sdcard_close and ..._init, catching and handling fh mismatch using the o-w-r sequence. Inconsistency will arise between fh and fs state; fh points to file at sector X with size Y and buffer with data Z, but fs file may be at different sector w/ different size and data; the cached datastructure intended to reflect fs state differs from data on disk/SD, and continuing with a mismatch leads to headless file operations (potential for corruption, lost data, missed writes, etc). Avoidable with detection and synchronization of fh with fs.
+- 207 remove dead code
+- 225 remove dead code
+- 303 replace preprocessor directive and collect integration tests.
+- 383 use standard abstraction naming such as get_<private_variable_name>
+
+
 
 #### LOG
 - note to self to check where emit_log_error_once is called; may be unsafe given warning about static/dynamic string usage
@@ -143,6 +150,9 @@ CMS .c files:
 ### COMMON
 #### COMMON
 - 337 finish or prune stack_check()
+
+#### BBSTR
+- n t s to check if there is a need for BBSTR API instead of using C string. Either we build a better string than C's implementation or use their binary; no reason to include both.
 
 #### LED DRIVER
 - 129 err != 0 ? 1 : 0 can be simplified to err ? 1 : 0

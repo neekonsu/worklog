@@ -126,6 +126,13 @@ CMS .c files:
 - 164 n t s that his is not a bad start for creating our error logging, but needs more adoption
 
 #### CMS INQUIS MAIN
+- 47 finish implementing self-tests
+
+#### CMS LOG WRITER
+- 73 determine appropriate value
+- 122 This is a slow loop. If we only write allcaps LOG<NUMBER>, unnecessary to CHECK_CHARS. Instead, strcmp each filename to skim the greatest, then strip the number and produce the next filename (only fully parse one string, the highest value filename instead of each). O(n * strcmp) instead of O(n * strparse).
+- 176 abstraction not needed since we already include fatfs in this file. This obfuscates logic/requires stepping into API. Recommend stripping all "one line abstractions" (API functions that contain one line or return statement) since they don't improve readability. If this pattern exists to replace function names like f_sync with sd_card_flush (from functional name to symbolic name) then I recommend using a comment for adding context instead of constructing methods to store meaning in the signature.
+- 
 
 #### LOG
 - note to self to check where emit_log_error_once is called; may be unsafe given warning about static/dynamic string usage
@@ -136,3 +143,7 @@ CMS .c files:
 ### COMMON
 #### COMMON
 - 337 finish or prune stack_check()
+
+#### LED DRIVER
+- 129 err != 0 ? 1 : 0 can be simplified to err ? 1 : 0
+

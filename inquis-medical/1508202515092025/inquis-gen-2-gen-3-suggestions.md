@@ -1,5 +1,5 @@
 #Inquis Gen 2 - Gen 3 Codebase Suggestions for Zach S.
-*The following suggestions are derived from code reviewed in the main branch of inquis_gen_2_2 <877e567d7b8383b5dc6bacf775bbc0a010b0521e> and inquis_gen_3_0 <9dfa6d65ccb128b5cd307f8082603f34d296797b>*
+*The following suggestions are derived from code reviewed in the main branch of inquis_gen_3_0 <9dfa6d65ccb128b5cd307f8082603f34d296797b>*
 
 **Process:** 1. Read all functions and make commentary in this file or grab callgraphs/screenshots of code and collect into google slides presentation. 2. Organize remarks into slideshow and consolidate items originating from the same module or repetitive patterns that span multiple modules 3. Pull main and branch to implement all changes, then review PR with Zach.
 
@@ -155,28 +155,27 @@ CMS .c files:
 - 314 n t s that all if/else code in each switch case should be converted into a preamble of boolean expressions to serve as predicates and switch statements within each FSM state for handling said predicates; The FSM and state transitions implements the device's state-transition matrix, even if we have not yet created this at the documentation level. Nested switches are much clearer implementations of the state-transition matrix than switches with nested if statements. For states with many child predicates (a state which can transition to a large number of other states; i.e. high connectivity node), the need to use one consistent syntactic structure is clear.
 - 353 complex boolean condition spans multiple lines, extract to case's preamble as a standalone bool variable assigned to the whole expression for clarity.
 - 424 unconditionally overwrites co2_ok state (if co2_ok is false then we reach PISTON_STATE_60_CONFIRMING_STOP and set it true, we are able to aspirate with the real condition being co2_ok false), remove this line entirely or qualify why in comments
-- 487 valve operation in error state without lid check, add safety check
-- 508 same valve operation without lid check issue
-- 521 same valve operation without lid check issue
-- 564 side effect timer_latch call in variable declaration section, move to actions
-- 601 no post call here?
-- 629 block comment explaining state clearing, extract to clear_handle_state function
-- 756 dead code with hardcoded false condition, remove false prefix
-- 764 same dead code pattern with false prefix
-- 771 redundant true condition, remove true prefix
-- 921 same redundant true condition
-- 935 entire commented case block LED_STATE_900_VACUUM_STATE_CYCLE, remove dead code
-- 1005 redundant true condition in if statement
+- 508 unchecked _set_valve_state_and_latch, should follow rule set by function/assert
+- 554 this computation should be performed once per tick, wrapped into cms_state
+- 564 timer_latch is redundant, replace with the logic; only two references
+- 598 consider wrapping time delta computations into cms_state fields once per tick since they reference the times stored in cms_state
+- 624 we expose all cms_state modifications in this case, but we abstract them to short functions elsewhere. I propose migrating all cms_state modifications from function to case unless repeated more than twice; function abstractions not neecessary to implement abstraction of an API obfuscate the logic.
+- 735 remove 'false' prefix from or-only conditionals, redundant and will short-circuit if 'and's are added later
+- 748 make this whole statement a single assignment for clarity.
+- 785 suggest collecting computations directly influencing sensing state into one location in fsm; harder to evaluate when distributed across code.
+- 935 entire commented case block LED_STATE_900_VACUUM_STATE_CYCLE, remove dead code, we can retreive from commit if needed
+- 971 collect all prelude code from _update_X_state functions into a single tick-start function that sets fields in cms_state to be used elsewhere; better to store the values we use for state transitions in cms_state instead of just-in-time variables, and ensures single point of modification to change computation behind a given value.
+- 1005 redundant true condition in if statement; let's remove all redundant hardcoded values in conditionals, needless risk
+- 1006 we sometimes compute this in the prelude (e.g. is_imp_state_3) and sometimes in the conditional predicate. I recommend we pick one approach and apply it consisitently, and computing boolean statements in the predicate is the best approach for full visibility of the state transition logic in each case. We don't want to separate the state transition logic from the case.
 - 1045 commented audio_play call, implement or remove
-- 1051 same commented audio call issue
-- 1102 test code in production logic, move to separate test harness
-- 1129 multiple test injection blocks scattered in main loop, extract to handle_integration_tests function
-- 1217 test packet availability override in production code, move to test mock layer
-- 1282 test CRC corruption in production code, move to test mock abstraction
-- 1392 dead timeout logic with redundant true condition, implement properly or remove
-- 1492 comment acknowledges ADC performance issue, implement timer-based sampling
-- 1494 six consecutive ADC samples in main loop causing performance bottleneck, cache results with periodic
+- 1102 consolidate preprocessor directives
+- 1129 consolidate preprocessor directives: multiple test injection blocks scattered in main loop, extract to handle_integration_tests function
+- 1217 consolidate preprocessor directives: test packet availability override in production code, move to test mock layer
+- 1282 consolidate preprocessor directives: test CRC corruption in production code, move to test mock abstraction
+- 1392 dead timeout logic: confirm whether we want to restore this
+- 1494 six consecutive ADC samples in main loop causing performance bottleneck, cache results with periodic asynchronous
 sampling
+
 
 
 #### LOG

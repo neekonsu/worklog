@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: GPU EC2 (p4de) with SSM, optional Elastic IP, Miniforge/mamba, EMopt (Ubuntu 22.04 DL Base GPU AMI)
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: p4de.24xlarge
+    AllowedValues:
+      - p4de.24xlarge
+      - p4d.24xlarge
+      - g6.12xlarge
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-006462ca7e2759418
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-0e25d87cbfa1da4e9
+
+  AllocateElasticIP:
+    Type: String
+    AllowedValues: ["true","false"]
+    Default: "false"
+
+  # Latest Deep Learning Base GPU AMI (Ubuntu 22.04) via SSM Parameter Store
+  DlamiIdFromSsm:
+    Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+    Default: "/aws/service/deeplearning/ami/x86_64/base-oss-nvidia-driver-gpu-ubuntu-22.04/latest/ami-id"
+
+  # Optional manual AMI override; leave blank to use DlamiIdFromSsm
+  AmiId:
+    Type: String
+    Default: ""
+
+  # Optional SSH key name; leave blank to use Session Manager only (no SSH)
+  KeyName:
+    Type: String
+    Default: ""
+
+  # Size of extra data volume mounted at /data
+  VolumeSizeGiB:
+    Type: Number
+    Default: 1000
+
+Conditions:
+  UseEip:   !Equals [ !Ref AllocateElasticIP, "true" ]
+  HasKey:   !Not    [ !Equals [ !Ref KeyName, "" ] ]
+  UseAmiId: !Not    [ !Equals [ !Ref AmiId, "" ] ]
+
+Resources:
+  SgInstance:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "No-ingress SG (use SSM); egress all"
+      VpcId: !Ref VpcId
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: "0.0.0.0/0"
+
+  SsmRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ec2.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Path: "/"
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [ !Ref SsmRole ]
+      Path: "/"
+
+  Volume:
+    Type: AWS::EC2::Volume
+    Properties:
+      AvailabilityZone: !GetAtt EC2Instance.AvailabilityZone
+      Size: !Ref VolumeSizeGiB
+      VolumeType: gp3
+      Throughput: 500
+      Iops: 9000
+      Encrypted: true
+      Tags:
+        - Key: Name
+          Value: gpu-emopt-ebs
+
+  VolumeAttachment:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      Device: /dev/sdf
+      InstanceId: !Ref EC2Instance
+      VolumeId: !Ref Volume
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !If [ UseAmiId, !Ref AmiId, !Ref DlamiIdFromSsm ]
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref InstanceProfile
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet: [ !Ref SgInstance ]
+          SubnetId: !Ref SubnetId
+      KeyName: !If [ HasKey, !Ref KeyName, !Ref "AWS::NoValue" ]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 200
+            VolumeType: gp3
+            Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/usr/bin/env bash
+          set -euxo pipefail
+
+          # Base tools
+          apt-get update -y
+          apt-get install -y git wget curl tmux htop build-essential pkg-config \
+                             libopenmpi-dev openmpi-bin unzip
+
+          # Mount extra EBS (attached as /dev/sdf) at /data
+          mkfs -t xfs /dev/sdf || true
+          mkdir -p /data
+          grep -q "/dev/sdf" /etc/fstab || echo "/dev/sdf /data xfs defaults,nofail 0 2" >> /etc/fstab
+          mount -a
+
+          # Miniforge (conda + mamba)
+          wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -O /tmp/miniforge.sh
+          bash /tmp/miniforge.sh -b -p /opt/miniforge3
+          echo 'export PATH=/opt/miniforge3/bin:$PATH' >> /etc/profile.d/conda.sh
+          /opt/miniforge3/bin/mamba update -n base -y mamba conda
+
+          # Create EMopt env
+          /opt/miniforge3/bin/mamba create -n emopt -y python=3.11 numpy scipy matplotlib requests mpi4py
+          # (Optional) PyTorch CUDA stack for GPU-adjoint workflows
+          /opt/miniforge3/bin/mamba install -n emopt -y -c pytorch -c nvidia pytorch torchvision torchaudio pytorch-cuda=12.1
+
+          # Install EMopt for the ubuntu user
+          sudo -u ubuntu bash -lc "source /opt/miniforge3/etc/profile.d/conda.sh && conda activate emopt && \
+            git clone https://github.com/anstmichaels/emopt.git ~/emopt && cd ~/emopt && python install.py"
+
+          # Ensure SSM agent is running (DLAMI usually has it)
+          systemctl enable amazon-ssm-agent || true
+          systemctl restart amazon-ssm-agent || true
+
+  Eip:
+    Type: AWS::EC2::EIP
+    Condition: UseEip
+    Properties:
+      Domain: vpc
+
+  EipAssoc:
+    Type: AWS::EC2::EIPAssociation
+    Condition: UseEip
+    Properties:
+      AllocationId: !GetAtt Eip.AllocationId
+      InstanceId: !Ref EC2Instance
+
+Outputs:
+  InstanceId:
+    Value: !Ref EC2Instance
+  ElasticIP:
+    Condition: UseEip
+    Value: !Ref Eip
+  ConnectViaSSM:
+    Value: "EC2 Console → Instances → Select → Connect → Session Manager"

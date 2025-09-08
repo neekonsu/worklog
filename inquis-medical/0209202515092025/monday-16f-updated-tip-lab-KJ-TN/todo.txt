@@ -1,0 +1,1 @@
+compare ./LOG*.csv to last friday's lab to determine why monday lab showed orange in isotonic but green in same isotonic on friday with no SW change

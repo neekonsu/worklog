@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/**)",
+      "Read(/Users/neekon/git/worklog/**)",
+      "Read(/Users/neekon/git/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/handle/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/inquis/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/inquis/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/inquis/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/inquis/**)",
+      "Read(/Users/neekon/git/inquis/inquis_gen_3_0/cms/inquis/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
